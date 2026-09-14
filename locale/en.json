@@ -40,6 +40,25 @@
         "published": "Published",
         "draft": "Draft"
       },
+      "editor": {
+        "back": "Back to products",
+        "characteristics": "Characteristics",
+        "readOnlyNotice": "Name and characteristics are read-only.",
+        "fields": {
+          "description": "Description",
+          "seoTitle": "SEO title",
+          "seoDescription": "SEO description",
+          "status": "Status"
+        },
+        "save": "Save changes",
+        "saving": "Saving…",
+        "saveSuccess": "Product saved.",
+        "saveError": "Couldn't save changes. Please try again.",
+        "validation": {
+          "required": "This field can't be empty.",
+          "tooLong": "Too long."
+        }
+      }
     }
   }
 }

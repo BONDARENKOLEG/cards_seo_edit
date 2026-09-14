@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/header";
+import { Header } from "@/components/Header";
+import { Toaster } from "@/components/ui/sonner";
 import { copy } from "@/locale";
+import { spacing } from "@/lib/spacing";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +29,8 @@ const RootLayout = ({ children }: LayoutProps<"/">) => {
     >
       <body className="min-h-full flex flex-col">
         <Header />
-        {children}
+        <div className={`pt-${spacing.l}`}>{children}</div>
+        <Toaster />
       </body>
     </html>
   );
