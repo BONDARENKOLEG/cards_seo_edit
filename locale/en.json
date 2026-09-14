@@ -12,7 +12,10 @@
   },
   "home": {
     "title": "Product catalog",
-    "placeholder": "Coming soon"
+    "empty": "No products available yet."
+  },
+  "productCard": {
+    "viewDetails": "View details"
   },
   "admin": {
     "home": {
