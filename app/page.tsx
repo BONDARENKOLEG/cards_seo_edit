@@ -1,7 +1,7 @@
 import { copy } from '@/locale';
-import { Typography } from '@/components/typography';
+import { Typography } from '@/components/Typography';
 import { spacing } from '@/lib/spacing';
-import { ProductCard } from '@/components/product-card';
+import { ProductCard } from '@/components/ProductCard';
 import { getPublishedProducts } from '@/mocks/products';
 
 const styles = {

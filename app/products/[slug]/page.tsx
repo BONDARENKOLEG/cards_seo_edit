@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
 
-import { Typography } from "@/components/typography";
+import { Typography } from "@/components/Typography";
+import { BackButton } from "@/components/BackButton";
 import { getPublishedProductBySlug } from "@/mocks/products";
+import { ProductAttributes } from "./components/ProductAttributes";
 import { styles } from "./product.styles";
 import {
   backLabel,
@@ -42,10 +42,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 
   return (
     <main className={styles.container}>
-      <Link href="/" className={styles.back}>
-        <ArrowLeft />
-        {backLabel}
-      </Link>
+      <BackButton href="/" label={backLabel} />
 
       <Typography as="h1" variant="title">
         {product.title}
@@ -55,14 +52,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
         <Typography as="h2" variant="title">
           {characteristicsLabel}
         </Typography>
-        <dl className={styles.attributesList}>
-          {product.attributes.map((attribute) => (
-            <div key={attribute.label} className={styles.attributeRow}>
-              <dt className={styles.attributeLabel}>{attribute.label}</dt>
-              <dd>{attribute.value}</dd>
-            </div>
-          ))}
-        </dl>
+        <ProductAttributes attributes={product.attributes} />
       </section>
 
       <section className={styles.section}>
