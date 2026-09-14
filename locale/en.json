@@ -17,6 +17,11 @@
   "productCard": {
     "viewDetails": "View details"
   },
+  "productPage": {
+    "back": "Back to catalog",
+    "characteristics": "Characteristics",
+    "description": "Description"
+  },
   "admin": {
     "home": {
       "title": "Admin panel",

@@ -2,7 +2,7 @@ import { copy } from '@/locale';
 import { Typography } from '@/components/typography';
 import { spacing } from '@/lib/spacing';
 import { ProductCard } from '@/components/product-card';
-import { mockProducts } from '@/mocks/products';
+import { getPublishedProducts } from '@/mocks/products';
 
 const styles = {
   container: `mx-auto flex w-full max-w-5xl flex-col gap-6 px-${spacing.normal} py-${spacing.xl}`,
@@ -14,9 +14,7 @@ const titleLabel = copy.home.title;
 const emptyLabel = copy.home.empty;
 
 const Home = () => {
-  const publishedProducts = mockProducts.filter(
-    (product) => product.status === 'published'
-  );
+  const publishedProducts = getPublishedProducts();
 
   const isEmpty = !publishedProducts.length;
 
