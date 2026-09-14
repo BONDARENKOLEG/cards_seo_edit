@@ -1,0 +1,23 @@
+{
+  "metadata": {
+    "title": "Product Content Studio",
+    "description": "Product card editor for an online store"
+  },
+  "header": {
+    "brand": "Product Content Studio",
+    "nav": {
+      "catalog": "Catalog",
+      "admin": "Admin"
+    }
+  },
+  "home": {
+    "title": "Product catalog",
+    "placeholder": "Coming soon"
+  },
+  "admin": {
+    "home": {
+      "title": "Admin panel",
+      "placeholder": "Coming soon"
+    }
+  }
+}
