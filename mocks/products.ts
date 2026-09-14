@@ -1,4 +1,5 @@
 import type { Product } from "@/types/product.types";
+import type { ProductEditInput } from "@/lib/productValidation";
 
 export const mockProducts: Product[] = [
   {
@@ -56,3 +57,28 @@ export const getPublishedProducts = () =>
 
 export const getPublishedProductBySlug = (slug: string) =>
   getPublishedProducts().find((product) => product.slug === slug);
+
+export const getProductById = (id: string) =>
+  mockProducts.find((product) => product.id === id);
+
+// Simulates a REST API round trip against the in-memory mock store; swap
+// for a real `fetch("/api/admin/products/:id")` call once the backend exists.
+export const saveProductEdits = async (
+  id: string,
+  data: ProductEditInput,
+): Promise<Product> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  const product = getProductById(id);
+
+  if (!product) {
+    throw new Error(`Product not found: ${id}`);
+  }
+
+  product.description = data.description;
+  product.seoTitle = data.seoTitle;
+  product.seoDescription = data.seoDescription;
+  product.status = data.status;
+
+  return product;
+};

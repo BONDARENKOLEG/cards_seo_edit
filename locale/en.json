@@ -23,9 +23,23 @@
     "description": "Description"
   },
   "admin": {
-    "home": {
-      "title": "Admin panel",
-      "placeholder": "Coming soon"
+    "products": {
+      "title": "Products",
+      "columns": {
+        "name": "Name",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "edit": "Edit",
+      "status": {
+        "draft": "Draft",
+        "published": "Published"
+      },
+      "filters": {
+        "all": "All",
+        "published": "Published",
+        "draft": "Draft"
+      },
     }
   }
 }
