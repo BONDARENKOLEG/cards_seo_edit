@@ -151,7 +151,11 @@ export const ProductEditorForm = ({ product }: { product: Product }) => {
       </div>
 
       <div className={styles.actions}>
-        <Button type="submit" disabled={saveState === "saving"}>
+        <Button
+          type="submit"
+          disabled={saveState === "saving"}
+          className={styles.submit}
+        >
           {saveState === "saving" ? savingLabel : saveLabel}
         </Button>
         {saveState === "error" && (

@@ -7,15 +7,12 @@ import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { copy } from '@/locale';
 import { spacing } from '@/lib/spacing';
+import { ROUTES } from '@/constants';
+import { LogoutButton } from '@/app/admin/components/LogoutButton';
 
 const brandLabel = copy.header.brand;
 const catalogLabel = copy.header.nav.catalog;
 const adminLabel = copy.header.nav.admin;
-
-const NAV_ITEMS = [
-  { href: '/', label: catalogLabel },
-  { href: '/admin', label: adminLabel },
-] as const;
 
 const styles = {
   header: 'border-b border-border bg-background mb-5',
@@ -26,32 +23,31 @@ const styles = {
     cn(buttonVariants({ variant: isActive ? 'secondary' : 'ghost' })),
 };
 
-const renderNavItems = (pathname: string) => {
-  return NAV_ITEMS.map((item) => {
-    const isActive =
-      item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
-
-    return (
-      <Link
-        key={item.href}
-        href={item.href}
-        aria-current={isActive ? 'page' : undefined}
-        className={styles.navLink(isActive)}
-      >
-        {item.label}
-      </Link>
-    );
-  });
-};
-
 export const Header = () => {
   const pathname = usePathname();
+  const isCatalogActive = pathname === '/';
+  const isAdminSection = pathname.startsWith('/admin');
 
   return (
     <header className={styles.header}>
       <div className={styles.container}>
         <span className={styles.brand}>{brandLabel}</span>
-        <nav className={styles.nav}>{renderNavItems(pathname)}</nav>
+        <nav className={styles.nav}>
+          <Link
+            href='/'
+            aria-current={isCatalogActive ? 'page' : undefined}
+            className={styles.navLink(isCatalogActive)}
+          >
+            {catalogLabel}
+          </Link>
+          {isAdminSection ? (
+            <LogoutButton />
+          ) : (
+            <Link href={ROUTES.ADMIN_HOME} className={styles.navLink(false)}>
+              {adminLabel}
+            </Link>
+          )}
+        </nav>
       </div>
     </header>
   );

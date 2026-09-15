@@ -17,6 +17,7 @@ export const styles = {
   counterInvalid: "text-xs text-destructive",
   errorText: "text-xs text-destructive",
   actions: "flex items-center gap-3",
+  submit: "cursor-pointer",
   statusMessage: (state: "success" | "error") =>
     cn("text-sm", state === "success" ? "text-primary" : "text-destructive"),
 };

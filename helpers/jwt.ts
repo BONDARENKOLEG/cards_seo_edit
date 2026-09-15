@@ -17,6 +17,7 @@ export const signToken = (userId: string, ttl: string, secret: Uint8Array) =>
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime(ttl)
+    .setJti(crypto.randomUUID())
     .sign(secret);
 
 export const verifyToken = async (

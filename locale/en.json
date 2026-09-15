@@ -23,6 +23,7 @@
     "description": "Description"
   },
   "admin": {
+    "logout": "Log out",
     "login": {
       "title": "Admin login",
       "fields": {
