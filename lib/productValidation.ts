@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { PRODUCT_STATUS } from "@/types/product.types";
+
 export const PRODUCT_LIMITS = {
   description: 1000,
   seoTitle: 60,
@@ -18,7 +20,7 @@ export const productEditSchema = z.object({
     .trim()
     .min(1)
     .max(PRODUCT_LIMITS.seoDescription),
-  status: z.enum(["draft", "published"]),
+  status: z.nativeEnum(PRODUCT_STATUS),
 });
 
 export type ProductEditInput = z.infer<typeof productEditSchema>;

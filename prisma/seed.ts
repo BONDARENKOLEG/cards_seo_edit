@@ -1,9 +1,13 @@
-import { PRODUCT_STATUS, type Product } from "@/types/product.types";
-import type { ProductEditInput } from "@/lib/productValidation";
+import { PrismaClient } from "../lib/generated/prisma/client";
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PRODUCT_STATUS } from "../types/product.types";
+import { DATABASE_URL } from "./env";
 
-export const mockProducts: Product[] = [
+const adapter = new PrismaBetterSqlite3({ url: DATABASE_URL });
+const prisma = new PrismaClient({ adapter });
+
+const products = [
   {
-    id: "1",
     slug: "wireless-headphones",
     title: "Wireless Headphones",
     attributes: [
@@ -19,7 +23,6 @@ export const mockProducts: Product[] = [
     status: PRODUCT_STATUS.PUBLISHED,
   },
   {
-    id: "2",
     slug: "ceramic-coffee-mug",
     title: "Ceramic Coffee Mug",
     attributes: [
@@ -35,7 +38,6 @@ export const mockProducts: Product[] = [
     status: PRODUCT_STATUS.PUBLISHED,
   },
   {
-    id: "3",
     slug: "trail-running-shoes",
     title: "Trail Running Shoes",
     attributes: [
@@ -52,33 +54,22 @@ export const mockProducts: Product[] = [
   },
 ];
 
-export const getPublishedProducts = () =>
-  mockProducts.filter((product) => product.status === PRODUCT_STATUS.PUBLISHED);
-
-export const getPublishedProductBySlug = (slug: string) =>
-  getPublishedProducts().find((product) => product.slug === slug);
-
-export const getProductById = (id: string) =>
-  mockProducts.find((product) => product.id === id);
-
-// Simulates a REST API round trip against the in-memory mock store; swap
-// for a real `fetch("/api/admin/products/:id")` call once the backend exists.
-export const saveProductEdits = async (
-  id: string,
-  data: ProductEditInput,
-): Promise<Product> => {
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  const product = getProductById(id);
-
-  if (!product) {
-    throw new Error(`Product not found: ${id}`);
+const main = async () => {
+  for (const product of products) {
+    await prisma.product.upsert({
+      where: { slug: product.slug },
+      update: product,
+      create: product,
+    });
   }
-
-  product.description = data.description;
-  product.seoTitle = data.seoTitle;
-  product.seoDescription = data.seoDescription;
-  product.status = data.status;
-
-  return product;
 };
+
+main()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (error) => {
+    console.error(error);
+    await prisma.$disconnect();
+    process.exit(1);
+  });

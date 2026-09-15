@@ -1,4 +1,7 @@
-export type ProductStatus = "draft" | "published";
+export enum PRODUCT_STATUS {
+  DRAFT = "draft",
+  PUBLISHED = "published",
+}
 
 export type ProductAttribute = {
   label: string;
@@ -13,5 +16,5 @@ export type Product = {
   description: string;
   seoTitle: string;
   seoDescription: string;
-  status: ProductStatus;
+  status: PRODUCT_STATUS;
 };
