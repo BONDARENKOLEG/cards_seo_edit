@@ -2,7 +2,7 @@ import { copy } from '@/locale';
 import { Typography } from '@/components/Typography';
 import { spacing } from '@/lib/spacing';
 import { ProductCard } from '@/components/ProductCard';
-import { getPublishedProducts } from '@/api/products';
+import { getPublishedProducts } from '@/api/getProducts';
 
 const styles = {
   container: `mx-auto flex w-full max-w-5xl flex-col gap-6 px-${spacing.normal} py-${spacing.xl}`,

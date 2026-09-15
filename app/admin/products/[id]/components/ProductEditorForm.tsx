@@ -17,9 +17,9 @@ import {
   PRODUCT_LIMITS,
   type ProductEditField,
 } from "@/lib/productValidation";
-import { saveProductEdits } from "@/mocks/products";
 import { PRODUCT_STATUS, type Product } from "@/types/product.types";
 import { FormField } from "./FormField";
+import { patchProduct } from "@/api/patchProducts";
 import { styles } from "../editor.styles";
 import {
   fieldLabels,
@@ -34,6 +34,17 @@ import {
 
 type SaveState = "idle" | "saving" | "success" | "error";
 type FieldErrors = Partial<Record<ProductEditField, string>>;
+type ZodIssue = { code: string; path: PropertyKey[] };
+
+const mapIssuesToFieldErrors = (issues: ZodIssue[]): FieldErrors => {
+  const errors: FieldErrors = {};
+  for (const issue of issues) {
+    const field = issue.path[0] as ProductEditField;
+    errors[field] =
+      issue.code === "too_big" ? tooLongValidationLabel : requiredValidationLabel;
+  }
+  return errors;
+};
 
 export const ProductEditorForm = ({ product }: { product: Product }) => {
   const [description, setDescription] = useState(product.description);
@@ -56,15 +67,7 @@ export const ProductEditorForm = ({ product }: { product: Product }) => {
     });
 
     if (!result.success) {
-      const errors: FieldErrors = {};
-      for (const issue of result.error.issues) {
-        const field = issue.path[0] as ProductEditField;
-        errors[field] =
-          issue.code === "too_big"
-            ? tooLongValidationLabel
-            : requiredValidationLabel;
-      }
-      setFieldErrors(errors);
+      setFieldErrors(mapIssuesToFieldErrors(result.error.issues));
       setSaveState("idle");
       return;
     }
@@ -73,7 +76,22 @@ export const ProductEditorForm = ({ product }: { product: Product }) => {
     setSaveState("saving");
 
     try {
-      await saveProductEdits(product.id, result.data);
+      const response = await patchProduct(product.id, result.data);
+
+      if (!response.ok) {
+        const body: { issues?: ZodIssue[] } = await response
+          .json()
+          .catch(() => ({}));
+
+        if (body.issues) {
+          setFieldErrors(mapIssuesToFieldErrors(body.issues));
+          setSaveState("idle");
+          return;
+        }
+
+        throw new Error(`Save failed with status ${response.status}`);
+      }
+
       setSaveState("success");
       toast.success(saveSuccessLabel);
     } catch {

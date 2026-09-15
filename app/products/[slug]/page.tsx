@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { Typography } from "@/components/Typography";
 import { BackButton } from "@/components/BackButton";
-import { getPublishedProductBySlug } from "@/api/products";
+import { getPublishedProductBySlug } from "@/api/getProducts";
 import { ProductAttributes } from "./components/ProductAttributes";
 import { styles } from "./product.styles";
 import {

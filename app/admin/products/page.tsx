@@ -6,7 +6,7 @@ import {
   TableRow,
   TableHead,
 } from "@/components/ui/table";
-import { getAllProducts, getProductsByStatus } from "@/api/products";
+import { getAllProducts, getProductsByStatus } from "@/api/getProducts";
 import {
   ProductFilters,
   PRODUCT_FILTER,

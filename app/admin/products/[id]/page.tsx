@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { Typography } from "@/components/Typography";
 import { BackButton } from "@/components/BackButton";
-import { getProductById } from "@/api/products";
+import { getProductById } from "@/api/getProducts";
 import { ProductEditorForm } from "./components/ProductEditorForm";
 import { styles } from "./editor.styles";
 import {
