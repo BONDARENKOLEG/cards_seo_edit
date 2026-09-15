@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { Typography } from "@/components/Typography";
 import { BackButton } from "@/components/BackButton";
-import { getProductById } from "@/mocks/products";
+import { getProductById } from "@/api/products";
 import { ProductEditorForm } from "./components/ProductEditorForm";
 import { styles } from "./editor.styles";
 import {
@@ -17,7 +17,7 @@ type AdminProductEditPageProps = {
 
 const AdminProductEditPage = async ({ params }: AdminProductEditPageProps) => {
   const { id } = await params;
-  const product = getProductById(id);
+  const product = await getProductById(id);
 
   if (!product) {
     notFound();

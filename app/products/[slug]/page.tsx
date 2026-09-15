@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { Typography } from "@/components/Typography";
 import { BackButton } from "@/components/BackButton";
-import { getPublishedProductBySlug } from "@/mocks/products";
+import { getPublishedProductBySlug } from "@/api/products";
 import { ProductAttributes } from "./components/ProductAttributes";
 import { styles } from "./product.styles";
 import {
@@ -20,7 +20,7 @@ export const generateMetadata = async ({
   params,
 }: ProductPageProps): Promise<Metadata> => {
   const { slug } = await params;
-  const product = getPublishedProductBySlug(slug);
+  const product = await getPublishedProductBySlug(slug);
 
   if (!product) {
     return {};
@@ -34,7 +34,7 @@ export const generateMetadata = async ({
 
 const ProductPage = async ({ params }: ProductPageProps) => {
   const { slug } = await params;
-  const product = getPublishedProductBySlug(slug);
+  const product = await getPublishedProductBySlug(slug);
 
   if (!product) {
     notFound();

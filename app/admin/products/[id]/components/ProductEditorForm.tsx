@@ -18,7 +18,7 @@ import {
   type ProductEditField,
 } from "@/lib/productValidation";
 import { saveProductEdits } from "@/mocks/products";
-import type { Product, ProductStatus } from "@/types/product.types";
+import { PRODUCT_STATUS, type Product } from "@/types/product.types";
 import { FormField } from "./FormField";
 import { styles } from "../editor.styles";
 import {
@@ -41,7 +41,7 @@ export const ProductEditorForm = ({ product }: { product: Product }) => {
   const [seoDescription, setSeoDescription] = useState(
     product.seoDescription,
   );
-  const [status, setStatus] = useState<ProductStatus>(product.status);
+  const [status, setStatus] = useState<PRODUCT_STATUS>(product.status);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [saveState, setSaveState] = useState<SaveState>("idle");
 
@@ -116,14 +116,16 @@ export const ProductEditorForm = ({ product }: { product: Product }) => {
         <Label htmlFor="status">{fieldLabels.status}</Label>
         <Select
           value={status}
-          onValueChange={(value) => setStatus(value as ProductStatus)}
+          onValueChange={(value) => setStatus(value as PRODUCT_STATUS)}
         >
           <SelectTrigger id="status">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="draft">{statusOptionLabels.draft}</SelectItem>
-            <SelectItem value="published">
+            <SelectItem value={PRODUCT_STATUS.DRAFT}>
+              {statusOptionLabels.draft}
+            </SelectItem>
+            <SelectItem value={PRODUCT_STATUS.PUBLISHED}>
               {statusOptionLabels.published}
             </SelectItem>
           </SelectContent>

@@ -6,8 +6,13 @@ import {
   TableRow,
   TableHead,
 } from "@/components/ui/table";
-import { mockProducts } from "@/mocks/products";
-import { ProductFilters, STATUS_FILTERS, type StatusFilter } from "./components/ProductFilters";
+import { getAllProducts, getProductsByStatus } from "@/api/products";
+import {
+  ProductFilters,
+  PRODUCT_FILTER,
+  STATUS_FILTERS,
+  type StatusFilter,
+} from "./components/ProductFilters";
 import { ProductRows } from "./components/ProductRows";
 import { styles } from "./products.styles";
 import {
@@ -18,7 +23,7 @@ import {
 } from "./products.copy";
 
 const parseStatusFilter = (status: string | undefined): StatusFilter =>
-  STATUS_FILTERS.find((filter) => filter === status) ?? "all";
+  STATUS_FILTERS.find((filter) => filter === status) ?? PRODUCT_FILTER.ALL;
 
 type AdminProductsPageProps = {
   searchParams: Promise<{ status?: string }>;
@@ -29,9 +34,9 @@ const AdminProductsPage = async ({ searchParams }: AdminProductsPageProps) => {
   const activeFilter = parseStatusFilter(status);
 
   const products =
-    activeFilter === "all"
-      ? mockProducts
-      : mockProducts.filter((product) => product.status === activeFilter);
+    activeFilter === PRODUCT_FILTER.ALL
+      ? await getAllProducts()
+      : await getProductsByStatus(activeFilter);
 
   return (
     <main className={styles.container}>

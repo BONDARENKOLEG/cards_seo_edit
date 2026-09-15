@@ -2,7 +2,7 @@ import { copy } from '@/locale';
 import { Typography } from '@/components/Typography';
 import { spacing } from '@/lib/spacing';
 import { ProductCard } from '@/components/ProductCard';
-import { getPublishedProducts } from '@/mocks/products';
+import { getPublishedProducts } from '@/api/products';
 
 const styles = {
   container: `mx-auto flex w-full max-w-5xl flex-col gap-6 px-${spacing.normal} py-${spacing.xl}`,
@@ -13,8 +13,8 @@ const styles = {
 const titleLabel = copy.home.title;
 const emptyLabel = copy.home.empty;
 
-const Home = () => {
-  const publishedProducts = getPublishedProducts();
+const Home = async () => {
+  const publishedProducts = await getPublishedProducts();
 
   const isEmpty = !publishedProducts.length;
 

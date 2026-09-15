@@ -1,9 +1,18 @@
 import Link from "next/link";
 
+import { PRODUCT_STATUS } from "@/types/product.types";
 import { styles } from "../products.styles";
 import { filterLabels } from "../products.copy";
 
-export const STATUS_FILTERS = ["all", "published", "draft"] as const;
+export enum PRODUCT_FILTER {
+  ALL = "all",
+}
+
+export const STATUS_FILTERS = [
+  PRODUCT_FILTER.ALL,
+  PRODUCT_STATUS.PUBLISHED,
+  PRODUCT_STATUS.DRAFT,
+] as const;
 export type StatusFilter = (typeof STATUS_FILTERS)[number];
 
 type ProductFiltersProps = {
@@ -17,7 +26,7 @@ export const ProductFilters = ({ activeFilter }: ProductFiltersProps) => {
         <Link
           key={filter}
           href={
-            filter === "all"
+            filter === PRODUCT_FILTER.ALL
               ? "/admin/products"
               : `/admin/products?status=${filter}`
           }
