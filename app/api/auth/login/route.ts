@@ -5,6 +5,7 @@ import { loginSchema } from '@/api/auth/validation';
 import { verifyPassword } from '@/helpers/passwords';
 import {
   signToken,
+  hashRefreshToken,
   ACCESS_TOKEN_SECRET,
   REFRESH_TOKEN_SECRET,
 } from '@/helpers/jwt';
@@ -13,7 +14,6 @@ import {
   REFRESH_TOKEN_TTL,
   REFRESH_TOKEN_MAX_AGE_SECONDS,
 } from '@/constants';
-import { hashRefreshToken } from '@/api/auth/refreshTokenHash';
 import { setAuthCookies } from '@/helpers/cookies';
 
 const INVALID_CREDENTIALS_MESSAGE = 'Invalid email or password';

@@ -1,7 +1,8 @@
 import type { ProductEditInput } from "@/lib/productValidation";
+import { authFetch } from "@/api/auth/authFetch";
 
 export const patchProduct = (id: string, data: ProductEditInput) => {
-  return fetch(`/api/admin/products/${id}`, {
+  return authFetch(`/api/admin/products/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),

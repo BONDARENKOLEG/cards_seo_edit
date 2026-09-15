@@ -14,6 +14,7 @@ import {
   CardFooter,
 } from '@/components/ui/card';
 import { login } from '@/api/auth/login';
+import { ROUTES } from '@/constants';
 import { styles } from './login.styles';
 import {
   titleLabel,
@@ -47,7 +48,7 @@ const AdminLoginPage = () => {
         return;
       }
 
-      router.push('/admin/products');
+      router.push(ROUTES.ADMIN_HOME);
       router.refresh();
     } catch {
       setSubmitState('error');
