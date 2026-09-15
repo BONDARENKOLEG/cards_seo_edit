@@ -23,4 +23,8 @@ Structured by feature/step, in the order they were built.
 - AI: added Prisma schema (`Product` model), SQLite migration + seed (3 demo products, matching mock data), switched catalog/product page/admin list/editor reads from mocks to the real DB (`api/getProducts.ts`). Built `PATCH /api/admin/products/[id]` — same zod schema validated client- and server-side, `revalidatePath` so status changes show up immediately.
 - Candidate: caught that `DATABASE_URL` had a silent hardcoded fallback duplicating what `.env` was meant to enforce — removed it, made it fail loudly instead. Requested a refactor of the status/sort types (`PRODUCT_STATUS`/`SORT_ORDER`/`PRODUCT_FILTER` as SCREAMING_SNAKE_CASE enums instead of string literals) and of the `api/` file architecture (client-safe fetch calls split into their own files — `api/getProducts.ts` for reads, `api/patchProducts.ts` for the admin mutation — kept separate from the Prisma-importing server code so nothing server-only leaks into the client bundle).
 
+## Admin login page
+
+- AI: built the `/admin/login` UI — email/password form on a shadcn `Card`, no submit logic yet (auth wiring is a separate step). Header's "Admin" link now points here instead of `/admin/products`.
+- Candidate: edited the submit button's styling directly in the file after AI's first pass.
 

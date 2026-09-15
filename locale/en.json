@@ -23,6 +23,16 @@
     "description": "Description"
   },
   "admin": {
+    "login": {
+      "title": "Admin login",
+      "fields": {
+        "email": "Email",
+        "password": "Password"
+      },
+      "submit": "Log in",
+      "submitting": "Logging in…",
+      "error": "Invalid email or password."
+    },
     "products": {
       "title": "Products",
       "columns": {
