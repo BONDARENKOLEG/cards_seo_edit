@@ -1,6 +1,6 @@
 import { PrismaClient } from '@/lib/generated/prisma/client';
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
-import { IS_PROD } from '@/lib/constants';
+import { IS_PROD } from '@/constants';
 import { DATABASE_URL } from './env';
 
 const createPrismaClient = () => {

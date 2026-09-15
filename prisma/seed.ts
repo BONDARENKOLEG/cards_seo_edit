@@ -1,7 +1,7 @@
 import { PrismaClient } from '../lib/generated/prisma/client';
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import { PRODUCT_STATUS } from '../types/product.types';
-import { hashPassword } from '../api/auth/passwords';
+import { hashPassword } from '../helpers/passwords';
 import { DATABASE_URL } from './env';
 
 const adapter = new PrismaBetterSqlite3({ url: DATABASE_URL });

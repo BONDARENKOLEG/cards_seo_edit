@@ -13,6 +13,7 @@ import {
   CardContent,
   CardFooter,
 } from '@/components/ui/card';
+import { login } from '@/api/auth/login';
 import { styles } from './login.styles';
 import {
   titleLabel,
@@ -26,17 +27,31 @@ type SubmitState = 'idle' | 'submitting' | 'error';
 
 const AdminLoginPage = () => {
   const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [submitState, setSubmitState] = useState<SubmitState>('idle');
+
+  const isFormFilled = email.trim() !== '' && password.trim() !== '';
+  const isDisabled = submitState === 'submitting' || !isFormFilled;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
-    const email = String(formData.get('email') ?? '');
-    const password = String(formData.get('password') ?? '');
-
     setSubmitState('submitting');
 
+    try {
+      const response = await login(email, password);
+
+      if (!response.ok) {
+        setSubmitState('error');
+        return;
+      }
+
+      router.push('/admin/products');
+      router.refresh();
+    } catch {
+      setSubmitState('error');
+    }
   };
 
   return (
@@ -54,6 +69,8 @@ const AdminLoginPage = () => {
                 name='email'
                 type='email'
                 autoComplete='email'
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
                 required
               />
             </div>
@@ -64,6 +81,8 @@ const AdminLoginPage = () => {
                 name='password'
                 type='password'
                 autoComplete='current-password'
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
                 required
               />
             </div>
@@ -75,8 +94,8 @@ const AdminLoginPage = () => {
           <CardFooter>
             <Button
               type='submit'
+              disabled={isDisabled}
               className={styles.submit}
-              disabled={submitState === 'submitting'}
             >
               {submitState === 'submitting' ? submittingLabel : submitLabel}
             </Button>
