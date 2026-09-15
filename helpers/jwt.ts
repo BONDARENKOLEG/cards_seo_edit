@@ -20,3 +20,17 @@ export const signToken = (userId: string, ttl: string, secret: Uint8Array) =>
     .setExpirationTime(ttl)
     .sign(secret);
 
+export const verifyToken = async (
+  token: string,
+  secret: Uint8Array,
+): Promise<TokenPayload | null> => {
+  try {
+    const { payload } = await jwtVerify(token, secret, {
+      algorithms: ["HS256"],
+    });
+    if (typeof payload.sub !== "string") return null;
+    return { sub: payload.sub };
+  } catch {
+    return null;
+  }
+};
