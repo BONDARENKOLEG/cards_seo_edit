@@ -51,3 +51,7 @@ next-env.d.ts
 
 # task desc files
 test-task-junior.md
+
+# agent skills — fetched via skills-lock.json, not source
+/.agents/
+/.claude/skills/
