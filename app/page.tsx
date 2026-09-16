@@ -4,6 +4,8 @@ import { spacing } from '@/lib/spacing';
 import { ProductCard } from '@/components/ProductCard';
 import { getPublishedProducts } from '@/api/getProducts';
 
+export const dynamic = 'force-dynamic';
+
 const styles = {
   container: `mx-auto flex w-full max-w-5xl flex-col gap-6 px-${spacing.normal} py-${spacing.xl}`,
   title: 'text-center',

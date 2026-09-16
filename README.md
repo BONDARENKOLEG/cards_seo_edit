@@ -113,22 +113,16 @@ To try it against the real model: get a free key at [aistudio.google.com/apikey]
 `.github/workflows/ci.yml` runs on every push/PR to `main`:
 
 1. `verify` job — installs deps, writes a throwaway `.env` (dummy JWT secrets, same shape as `.env.example`), applies migrations, then runs `npm run verify` (format check → lint → test → build), identical to what you'd run locally.
-2. `deploy` job — only runs on a push to `main`, and only if `verify` succeeded (`needs: verify`). It triggers a deploy by POSTing to a Render **Deploy Hook** URL — Render itself does nothing on push; the hook is the only thing that starts a deploy, so a failing pipeline never ships.
+2. `deploy` job — only runs on a push to `main`, and only if `verify` succeeded (`needs: verify`). It triggers a deploy by POSTing to a Render **Deploy Hook** URL (held in the `RENDER_DEPLOY_HOOK_URL` GitHub secret) — Render itself does nothing on push; the hook is the only thing that starts a deploy, so a failing pipeline never ships. Build command: `npm ci && npm run db:migrate:deploy && npm run build`. Start command: `npm run db:migrate:deploy && npm run db:seed && npm start`.
 
-**To wire up the Render side** (one-time setup, not done as part of this session — no Render account was created here):
+**Known caveat — ephemeral disk (free tier):** Render's persistent disks require a paid instance type; free web services don't get one. Without one, the SQLite file lives on the container's writable layer only — it resets on every restart (including the free tier's sleep/wake cycle on inactivity), not just on a new deploy. Two consequences, both handled:
 
-1. Create a Render **Web Service**, connect this GitHub repo.
-2. Build command: `npm ci && npm run build`. Start command: `npm run db:migrate:deploy && npm start`.
-3. Set env vars in Render's dashboard (not in the repo): `DATABASE_URL`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, and optionally `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `GEMINI_API_KEY`.
-4. Turn **off** Render's own "Auto-Deploy" toggle — otherwise Render deploys on every push regardless of CI, defeating the point of gating on `verify`.
-5. Render Settings → Deploy Hook → copy the URL → add it as a GitHub repo secret named `RENDER_DEPLOY_HOOK_URL` (Settings → Secrets and variables → Actions).
-
-**Known caveat:** Render's default disk is ephemeral — SQLite data (including the seeded admin user and demo products) resets on every deploy/restart unless you attach a Render persistent disk and point `DATABASE_URL` at a path on it. The start command re-applies migrations on boot either way, but does **not** re-seed automatically (seeding uses `upsert`, so re-running it on every restart would silently revert any edits made through the admin panel back to the seed data — run `npm run db:seed` manually once instead, e.g. via Render's shell).
+- The start command re-seeds on every boot (`db:migrate:deploy && db:seed && start`), so a freshly-woken instance is never stuck empty. Trade-off: any edits made through the admin panel get reverted to the seed data next time the instance restarts — acceptable for a reviewable demo, not for real user data. On a paid plan, attach a persistent disk, point `DATABASE_URL` at a path on it, and drop `db:seed` from the start command so real edits actually persist.
+- The catalog page (`/`) is **not** statically prerendered (`export const dynamic = "force-dynamic"` in `app/page.tsx`) — it was originally static, which baked whatever the database looked like at build time into the HTML permanently (no amount of re-seeding at runtime would change an already-built static page; only a new deploy regenerates it). Every other route here already reads the database per request, so this just brings the homepage in line with the rest of the app instead of being the one exception that silently went stale.
 
 ## Known limitations / unfinished parts
 
 - **No UI/component or end-to-end tests** — covered manually instead (see [Testing](#testing)). Would add React Testing Library for the editor form and/or Playwright for the full login → edit → publish flow with more time.
-- **Render deploy not actually verified** — the GitHub Actions `verify` job runs and passes in this repo, but no Render service was created/connected in this session, so the `deploy` job and the live app have not been tested end-to-end.
 - **Other bonus tasks not attempted:** Shopify import, a Figma-sourced design pass.
 
 ## Time spent
