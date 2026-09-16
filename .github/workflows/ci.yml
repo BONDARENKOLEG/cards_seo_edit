@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # Dummy secrets, safe to commit/use in CI — real deployments set their
+      # own values as Render environment variables, not through this file.
+      - name: Configure environment
+        run: |
+          cat <<'EOF' > .env
+          DATABASE_URL="file:./dev.db"
+          JWT_ACCESS_SECRET="ci-only-access-secret-do-not-use-in-production"
+          JWT_REFRESH_SECRET="ci-only-refresh-secret-do-not-use-in-production"
+          ADMIN_EMAIL=admin@mail.com
+          ADMIN_PASSWORD=12345678
+          EOF
+
+      - name: Apply migrations
+        run: npm run db:migrate:deploy
+
+      # format check -> lint -> test -> build, same as a local `npm run verify`
+      - run: npm run verify
+
+  deploy:
+    needs: verify
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render deploy
+        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"

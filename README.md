@@ -53,17 +53,18 @@ The seed also creates three demo products: two published, one draft (visible in 
 
 ## Available scripts
 
-| Command                       | Description                                      |
-| ----------------------------- | ------------------------------------------------ |
-| `npm run dev`                 | Start the dev server                             |
-| `npm run build` / `npm start` | Production build / start                         |
-| `npm run lint`                | ESLint                                           |
-| `npm run format`              | Format the codebase with Prettier                |
-| `npm run format:check`        | Check formatting without writing changes         |
-| `npm test`                    | Run the automated test suite (Vitest)            |
-| `npm run setup`               | Run migrations + seed (first-time / reset setup) |
-| `npm run db:migrate`          | Apply Prisma migrations only                     |
-| `npm run db:seed`             | Re-run the seed only                             |
+| Command                       | Description                                       |
+| ----------------------------- | ------------------------------------------------- |
+| `npm run dev`                 | Start the dev server                              |
+| `npm run build` / `npm start` | Production build / start                          |
+| `npm run lint`                | ESLint                                            |
+| `npm run format`              | Format the codebase with Prettier                 |
+| `npm run format:check`        | Check formatting without writing changes          |
+| `npm test`                    | Run the automated test suite (Vitest)             |
+| `npm run verify`              | Format check + lint + test + build, in that order |
+| `npm run setup`               | Run migrations + seed (first-time / reset setup)  |
+| `npm run db:migrate`          | Apply Prisma migrations only                      |
+| `npm run db:seed`             | Re-run the seed only                              |
 
 ## Testing
 
@@ -107,10 +108,28 @@ In the product editor, **Generate with AI** asks Gemini (`gemini-3.6-flash`, via
 
 To try it against the real model: get a free key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey), add `GEMINI_API_KEY=...` to `.env`, and restart the dev server.
 
+## CI/CD (bonus)
+
+`.github/workflows/ci.yml` runs on every push/PR to `main`:
+
+1. `verify` job — installs deps, writes a throwaway `.env` (dummy JWT secrets, same shape as `.env.example`), applies migrations, then runs `npm run verify` (format check → lint → test → build), identical to what you'd run locally.
+2. `deploy` job — only runs on a push to `main`, and only if `verify` succeeded (`needs: verify`). It triggers a deploy by POSTing to a Render **Deploy Hook** URL — Render itself does nothing on push; the hook is the only thing that starts a deploy, so a failing pipeline never ships.
+
+**To wire up the Render side** (one-time setup, not done as part of this session — no Render account was created here):
+
+1. Create a Render **Web Service**, connect this GitHub repo.
+2. Build command: `npm ci && npm run build`. Start command: `npm run db:migrate:deploy && npm start`.
+3. Set env vars in Render's dashboard (not in the repo): `DATABASE_URL`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, and optionally `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `GEMINI_API_KEY`.
+4. Turn **off** Render's own "Auto-Deploy" toggle — otherwise Render deploys on every push regardless of CI, defeating the point of gating on `verify`.
+5. Render Settings → Deploy Hook → copy the URL → add it as a GitHub repo secret named `RENDER_DEPLOY_HOOK_URL` (Settings → Secrets and variables → Actions).
+
+**Known caveat:** Render's default disk is ephemeral — SQLite data (including the seeded admin user and demo products) resets on every deploy/restart unless you attach a Render persistent disk and point `DATABASE_URL` at a path on it. The start command re-applies migrations on boot either way, but does **not** re-seed automatically (seeding uses `upsert`, so re-running it on every restart would silently revert any edits made through the admin panel back to the seed data — run `npm run db:seed` manually once instead, e.g. via Render's shell).
+
 ## Known limitations / unfinished parts
 
 - **No UI/component or end-to-end tests** — covered manually instead (see [Testing](#testing)). Would add React Testing Library for the editor form and/or Playwright for the full login → edit → publish flow with more time.
-- **Other bonus tasks not attempted:** Shopify import, a Figma-sourced design pass, Docker/CI. None of these are required for acceptance per the task.
+- **Render deploy not actually verified** — the GitHub Actions `verify` job runs and passes in this repo, but no Render service was created/connected in this session, so the `deploy` job and the live app have not been tested end-to-end.
+- **Other bonus tasks not attempted:** Shopify import, a Figma-sourced design pass.
 
 ## Time spent
 
