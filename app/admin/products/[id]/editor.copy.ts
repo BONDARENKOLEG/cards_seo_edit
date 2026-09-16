@@ -13,3 +13,9 @@ export const requiredValidationLabel =
   copy.admin.products.editor.validation.required;
 export const tooLongValidationLabel =
   copy.admin.products.editor.validation.tooLong;
+export const unsavedChangesTitle =
+  copy.admin.products.editor.unsavedChanges.title;
+export const unsavedChangesDescription =
+  copy.admin.products.editor.unsavedChanges.description;
+export const leaveLabel = copy.admin.products.editor.unsavedChanges.leave;
+export const stayLabel = copy.admin.products.editor.unsavedChanges.stay;

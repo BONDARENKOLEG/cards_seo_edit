@@ -68,6 +68,12 @@
         "validation": {
           "required": "This field can't be empty.",
           "tooLong": "Too long."
+        },
+        "unsavedChanges": {
+          "title": "Unsaved changes",
+          "description": "You have unsaved changes. If you leave now, they'll be lost.",
+          "leave": "Leave without saving",
+          "stay": "Stay"
         }
       }
     }

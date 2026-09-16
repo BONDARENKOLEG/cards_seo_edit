@@ -1,9 +1,10 @@
 import { notFound } from 'next/navigation';
 
 import { Typography } from '@/components/Typography';
-import { BackButton } from '@/components/BackButton';
 import { getProductById } from '@/api/getProducts';
 import { ProductEditorForm } from './components/ProductEditorForm';
+import { EditorBackLink } from './components/EditorBackLink';
+import { EditorDirtyProvider } from './EditorDirtyContext';
 import { styles } from './editor.styles';
 import {
   backLabel,
@@ -24,32 +25,34 @@ const AdminProductEditPage = async ({ params }: AdminProductEditPageProps) => {
   }
 
   return (
-    <main className={styles.container}>
-      <BackButton href="/admin/products" label={backLabel} />
+    <EditorDirtyProvider>
+      <main className={styles.container}>
+        <EditorBackLink href="/admin/products" label={backLabel} />
 
-      <Typography as="h1" variant="title">
-        {product.title}
-      </Typography>
-      <Typography as="p" className={styles.readOnlyNotice}>
-        {readOnlyNoticeLabel}
-      </Typography>
-
-      <section className={styles.section}>
-        <Typography as="h2" variant="title">
-          {characteristicsLabel}
+        <Typography as="h1" variant="title">
+          {product.title}
         </Typography>
-        <dl className={styles.attributesList}>
-          {product.attributes.map((attribute) => (
-            <div key={attribute.label} className={styles.attributeRow}>
-              <dt className={styles.attributeLabel}>{attribute.label}</dt>
-              <dd>{attribute.value}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
+        <Typography as="p" className={styles.readOnlyNotice}>
+          {readOnlyNoticeLabel}
+        </Typography>
 
-      <ProductEditorForm product={product} />
-    </main>
+        <section className={styles.section}>
+          <Typography as="h2" variant="title">
+            {characteristicsLabel}
+          </Typography>
+          <dl className={styles.attributesList}>
+            {product.attributes.map((attribute) => (
+              <div key={attribute.label} className={styles.attributeRow}>
+                <dt className={styles.attributeLabel}>{attribute.label}</dt>
+                <dd>{attribute.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <ProductEditorForm product={product} />
+      </main>
+    </EditorDirtyProvider>
   );
 };
 

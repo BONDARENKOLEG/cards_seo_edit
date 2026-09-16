@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import { toast } from 'sonner';
 
 import { Label } from '@/components/ui/label';
@@ -20,6 +20,7 @@ import {
 import { PRODUCT_STATUS, type Product } from '@/types/product.types';
 import { FormField } from './FormField';
 import { patchProduct } from '@/api/patchProducts';
+import { useEditorDirty } from '../EditorDirtyContext';
 import { styles } from '../editor.styles';
 import {
   fieldLabels,
@@ -55,6 +56,35 @@ export const ProductEditorForm = ({ product }: { product: Product }) => {
   const [status, setStatus] = useState<PRODUCT_STATUS>(product.status);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [saveState, setSaveState] = useState<SaveState>('idle');
+  const [savedValues, setSavedValues] = useState({
+    description: product.description,
+    seoTitle: product.seoTitle,
+    seoDescription: product.seoDescription,
+    status: product.status
+  });
+  const { setIsDirty } = useEditorDirty();
+
+  const isDirty =
+    description !== savedValues.description ||
+    seoTitle !== savedValues.seoTitle ||
+    seoDescription !== savedValues.seoDescription ||
+    status !== savedValues.status;
+
+  useEffect(() => {
+    setIsDirty(isDirty);
+  }, [isDirty, setIsDirty]);
+
+  useEffect(() => {
+    if (!isDirty) return;
+
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = '';
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [isDirty]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -92,6 +122,7 @@ export const ProductEditorForm = ({ product }: { product: Product }) => {
         throw new Error(`Save failed with status ${response.status}`);
       }
 
+      setSavedValues(result.data);
       setSaveState('success');
       toast.success(saveSuccessLabel);
     } catch {
@@ -153,7 +184,7 @@ export const ProductEditorForm = ({ product }: { product: Product }) => {
       <div className={styles.actions}>
         <Button
           type="submit"
-          disabled={saveState === 'saving'}
+          disabled={saveState === 'saving' || !isDirty}
           className={styles.submit}
         >
           {saveState === 'saving' ? savingLabel : saveLabel}
