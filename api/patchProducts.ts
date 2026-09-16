@@ -1,4 +1,4 @@
-import type { ProductEditInput } from "@/lib/productValidation";
+import type { ProductEditInput } from "@/helpers/productValidation";
 import { authFetch } from "@/api/auth/authFetch";
 
 export const patchProduct = (id: string, data: ProductEditInput) => {

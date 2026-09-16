@@ -16,7 +16,7 @@ import {
   productEditSchema,
   PRODUCT_LIMITS,
   type ProductEditField,
-} from "@/lib/productValidation";
+} from "@/helpers/productValidation";
 import { PRODUCT_STATUS, type Product } from "@/types/product.types";
 import { FormField } from "./FormField";
 import { patchProduct } from "@/api/patchProducts";
