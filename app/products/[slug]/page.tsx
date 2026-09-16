@@ -1,23 +1,23 @@
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
-import { Typography } from "@/components/Typography";
-import { BackButton } from "@/components/BackButton";
-import { getPublishedProductBySlug } from "@/api/getProducts";
-import { ProductAttributes } from "./components/ProductAttributes";
-import { styles } from "./product.styles";
+import { Typography } from '@/components/Typography';
+import { BackButton } from '@/components/BackButton';
+import { getPublishedProductBySlug } from '@/api/getProducts';
+import { ProductAttributes } from './components/ProductAttributes';
+import { styles } from './product.styles';
 import {
   backLabel,
   characteristicsLabel,
-  descriptionLabel,
-} from "./product.copy";
+  descriptionLabel
+} from './product.copy';
 
 type ProductPageProps = {
   params: Promise<{ slug: string }>;
 };
 
 export const generateMetadata = async ({
-  params,
+  params
 }: ProductPageProps): Promise<Metadata> => {
   const { slug } = await params;
   const product = await getPublishedProductBySlug(slug);
@@ -28,7 +28,7 @@ export const generateMetadata = async ({
 
   return {
     title: product.seoTitle,
-    description: product.seoDescription,
+    description: product.seoDescription
   };
 };
 

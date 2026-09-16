@@ -10,7 +10,10 @@ describe('GET /api/products', () => {
 
   it('only returns published products', async () => {
     await seedProduct({ slug: 'draft-1', status: PRODUCT_STATUS.DRAFT });
-    await seedProduct({ slug: 'published-1', status: PRODUCT_STATUS.PUBLISHED });
+    await seedProduct({
+      slug: 'published-1',
+      status: PRODUCT_STATUS.PUBLISHED
+    });
 
     const response = await getProducts();
     const body = await response.json();
@@ -26,11 +29,14 @@ describe('GET /api/products/[slug]', () => {
 
   const call = (slug: string) =>
     getProductBySlug(new Request(`http://localhost/api/products/${slug}`), {
-      params: Promise.resolve({ slug }),
+      params: Promise.resolve({ slug })
     });
 
   it('returns a published product', async () => {
-    await seedProduct({ slug: 'published-1', status: PRODUCT_STATUS.PUBLISHED });
+    await seedProduct({
+      slug: 'published-1',
+      status: PRODUCT_STATUS.PUBLISHED
+    });
 
     const response = await call('published-1');
     const body = await response.json();

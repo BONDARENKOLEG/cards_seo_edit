@@ -1,5 +1,5 @@
-import type { ProductAttribute } from "@/types/product.types";
-import { styles } from "../product.styles";
+import type { ProductAttribute } from '@/types/product.types';
+import { styles } from '../product.styles';
 
 type ProductAttributesProps = {
   attributes: ProductAttribute[];

@@ -1,17 +1,17 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-import { PRODUCT_STATUS } from "@/types/product.types";
-import { styles } from "../products.styles";
-import { filterLabels } from "../products.copy";
+import { PRODUCT_STATUS } from '@/types/product.types';
+import { styles } from '../products.styles';
+import { filterLabels } from '../products.copy';
 
 export enum PRODUCT_FILTER {
-  ALL = "all",
+  ALL = 'all'
 }
 
 export const STATUS_FILTERS = [
   PRODUCT_FILTER.ALL,
   PRODUCT_STATUS.PUBLISHED,
-  PRODUCT_STATUS.DRAFT,
+  PRODUCT_STATUS.DRAFT
 ] as const;
 export type StatusFilter = (typeof STATUS_FILTERS)[number];
 
@@ -27,10 +27,10 @@ export const ProductFilters = ({ activeFilter }: ProductFiltersProps) => {
           key={filter}
           href={
             filter === PRODUCT_FILTER.ALL
-              ? "/admin/products"
+              ? '/admin/products'
               : `/admin/products?status=${filter}`
           }
-          aria-current={filter === activeFilter ? "page" : undefined}
+          aria-current={filter === activeFilter ? 'page' : undefined}
           className={styles.filterLink(filter === activeFilter)}
         >
           {filterLabels[filter]}

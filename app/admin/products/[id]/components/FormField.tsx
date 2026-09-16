@@ -1,7 +1,7 @@
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { styles } from "../editor.styles";
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { styles } from '../editor.styles';
 
 type FormFieldProps = {
   id: string;
@@ -10,7 +10,7 @@ type FormFieldProps = {
   onChange: (value: string) => void;
   maxLength: number;
   error?: string;
-  as?: "input" | "textarea";
+  as?: 'input' | 'textarea';
 };
 
 export const FormField = ({
@@ -20,9 +20,9 @@ export const FormField = ({
   onChange,
   maxLength,
   error,
-  as = "input",
+  as = 'input'
 }: FormFieldProps) => {
-  const Field = as === "textarea" ? Textarea : Input;
+  const Field = as === 'textarea' ? Textarea : Input;
 
   return (
     <div className={styles.field}>

@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
-import { getPublishedProducts } from "@/api/getProducts";
+import { getPublishedProducts } from '@/api/getProducts';
 
 export const GET = async () => {
   const products = await getPublishedProducts();

@@ -4,7 +4,7 @@ import { verifyToken, ACCESS_TOKEN_SECRET } from '@/helpers/jwt';
 import {
   ACCESS_TOKEN_COOKIE,
   REFRESH_TOKEN_COOKIE,
-  setAuthCookies,
+  setAuthCookies
 } from '@/helpers/cookies';
 import { rotateSession, type RotatedTokens } from '@/helpers/refreshSession';
 import { ROUTES } from '@/constants';
@@ -54,5 +54,5 @@ export const proxy = async (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/admin/:path*'],
+  matcher: ['/admin/:path*', '/api/admin/:path*']
 };

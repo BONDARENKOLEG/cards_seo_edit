@@ -1,8 +1,8 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from 'next/server';
 
-import { prisma } from "@/prisma/client";
-import { verifyToken, REFRESH_TOKEN_SECRET } from "@/helpers/jwt";
-import { clearAuthCookies, REFRESH_TOKEN_COOKIE } from "@/helpers/cookies";
+import { prisma } from '@/prisma/client';
+import { verifyToken, REFRESH_TOKEN_SECRET } from '@/helpers/jwt';
+import { clearAuthCookies, REFRESH_TOKEN_COOKIE } from '@/helpers/cookies';
 
 export const POST = async (request: NextRequest) => {
   const refreshToken = request.cookies.get(REFRESH_TOKEN_COOKIE)?.value;
@@ -14,7 +14,7 @@ export const POST = async (request: NextRequest) => {
       await prisma.user
         .update({
           where: { id: payload.sub },
-          data: { refreshTokenHash: null, refreshTokenExpiresAt: null },
+          data: { refreshTokenHash: null, refreshTokenExpiresAt: null }
         })
         .catch(() => {
           // Best-effort: user may already be gone — cookies still get cleared below.

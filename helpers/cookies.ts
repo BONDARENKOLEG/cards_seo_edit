@@ -3,7 +3,7 @@ import type { NextResponse } from 'next/server';
 import {
   IS_PROD,
   ACCESS_TOKEN_MAX_AGE_SECONDS,
-  REFRESH_TOKEN_MAX_AGE_SECONDS,
+  REFRESH_TOKEN_MAX_AGE_SECONDS
 } from '@/constants';
 
 export const ACCESS_TOKEN_COOKIE = 'access_token';
@@ -20,7 +20,7 @@ export const setAuthCookies = (response: NextResponse, tokens: Tokens) => {
     secure: IS_PROD,
     sameSite: 'lax',
     path: '/',
-    maxAge: ACCESS_TOKEN_MAX_AGE_SECONDS,
+    maxAge: ACCESS_TOKEN_MAX_AGE_SECONDS
   });
 
   response.cookies.set(REFRESH_TOKEN_COOKIE, tokens.refreshToken, {
@@ -28,7 +28,7 @@ export const setAuthCookies = (response: NextResponse, tokens: Tokens) => {
     secure: IS_PROD,
     sameSite: 'lax',
     path: '/',
-    maxAge: REFRESH_TOKEN_MAX_AGE_SECONDS,
+    maxAge: REFRESH_TOKEN_MAX_AGE_SECONDS
   });
 
   return response;
@@ -40,7 +40,7 @@ export const clearAuthCookies = (response: NextResponse) => {
     secure: IS_PROD,
     sameSite: 'lax',
     path: '/',
-    maxAge: 0,
+    maxAge: 0
   });
 
   response.cookies.set(REFRESH_TOKEN_COOKIE, '', {
@@ -48,7 +48,7 @@ export const clearAuthCookies = (response: NextResponse) => {
     secure: IS_PROD,
     sameSite: 'lax',
     path: '/',
-    maxAge: 0,
+    maxAge: 0
   });
 
   return response;

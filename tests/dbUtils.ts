@@ -7,7 +7,9 @@ export const resetDb = async () => {
   await prisma.user.deleteMany();
 };
 
-export const seedProduct = (overrides: Partial<Parameters<typeof prisma.product.create>[0]['data']> = {}) =>
+export const seedProduct = (
+  overrides: Partial<Parameters<typeof prisma.product.create>[0]['data']> = {}
+) =>
   prisma.product.create({
     data: {
       slug: 'test-product',
@@ -17,8 +19,8 @@ export const seedProduct = (overrides: Partial<Parameters<typeof prisma.product.
       seoTitle: 'Test product SEO title',
       seoDescription: 'Test product SEO description.',
       status: PRODUCT_STATUS.DRAFT,
-      ...overrides,
-    },
+      ...overrides
+    }
   });
 
 export const seedUser = async (
@@ -26,5 +28,5 @@ export const seedUser = async (
   password = '12345678'
 ) =>
   prisma.user.create({
-    data: { email, passwordHash: await hashPassword(password) },
+    data: { email, passwordHash: await hashPassword(password) }
   });

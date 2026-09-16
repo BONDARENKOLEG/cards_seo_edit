@@ -1,4 +1,4 @@
-import { copy } from "@/locale";
+import { copy } from '@/locale';
 
 export const backLabel = copy.admin.products.editor.back;
 export const characteristicsLabel = copy.admin.products.editor.characteristics;

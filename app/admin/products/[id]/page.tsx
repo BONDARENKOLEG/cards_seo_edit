@@ -1,15 +1,15 @@
-import { notFound } from "next/navigation";
+import { notFound } from 'next/navigation';
 
-import { Typography } from "@/components/Typography";
-import { BackButton } from "@/components/BackButton";
-import { getProductById } from "@/api/getProducts";
-import { ProductEditorForm } from "./components/ProductEditorForm";
-import { styles } from "./editor.styles";
+import { Typography } from '@/components/Typography';
+import { BackButton } from '@/components/BackButton';
+import { getProductById } from '@/api/getProducts';
+import { ProductEditorForm } from './components/ProductEditorForm';
+import { styles } from './editor.styles';
 import {
   backLabel,
   characteristicsLabel,
-  readOnlyNoticeLabel,
-} from "./editor.copy";
+  readOnlyNoticeLabel
+} from './editor.copy';
 
 type AdminProductEditPageProps = {
   params: Promise<{ id: string }>;

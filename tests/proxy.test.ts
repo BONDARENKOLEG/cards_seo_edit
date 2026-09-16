@@ -6,7 +6,7 @@ import {
   signToken,
   hashRefreshToken,
   ACCESS_TOKEN_SECRET,
-  REFRESH_TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET
 } from '@/helpers/jwt';
 import { ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from '@/helpers/cookies';
 import { ACCESS_TOKEN_TTL, REFRESH_TOKEN_TTL } from '@/constants';
@@ -67,14 +67,14 @@ describe('proxy — /api/admin/* (fetch-style consumers)', () => {
       where: { id: user.id },
       data: {
         refreshTokenHash: hashRefreshToken(refreshToken),
-        refreshTokenExpiresAt: new Date(Date.now() + DAY_MS),
-      },
+        refreshTokenExpiresAt: new Date(Date.now() + DAY_MS)
+      }
     });
 
     const response = await proxy(
       request('/api/admin/products/1', {
         [ACCESS_TOKEN_COOKIE]: 'expired-or-garbage',
-        [REFRESH_TOKEN_COOKIE]: refreshToken,
+        [REFRESH_TOKEN_COOKIE]: refreshToken
       })
     );
 

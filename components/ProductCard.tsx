@@ -1,23 +1,23 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
-  CardFooter,
-} from "@/components/ui/card";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { copy } from "@/locale";
-import type { Product } from "@/types/product.types";
+  CardFooter
+} from '@/components/ui/card';
+import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { copy } from '@/locale';
+import type { Product } from '@/types/product.types';
 
 const viewDetailsLabel = copy.productCard.viewDetails;
 
 const styles = {
-  description: "line-clamp-3",
-  footer: "justify-end",
-  link: cn(buttonVariants({ variant: "outline", size: "sm" })),
+  description: 'line-clamp-3',
+  footer: 'justify-end',
+  link: cn(buttonVariants({ variant: 'outline', size: 'sm' }))
 };
 
 export const ProductCard = ({ product }: { product: Product }) => {

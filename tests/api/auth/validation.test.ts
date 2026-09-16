@@ -24,8 +24,6 @@ describe('loginSchema', () => {
   });
 
   it('rejects a missing email', () => {
-    expect(loginSchema.safeParse({ password: '12345678' }).success).toBe(
-      false
-    );
+    expect(loginSchema.safeParse({ password: '12345678' }).success).toBe(false);
   });
 });

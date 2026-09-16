@@ -16,17 +16,20 @@ import { PATCH } from '@/app/api/admin/products/[id]/route';
 // checks the handler's own behavior: validation, persistence, and 404s.
 
 const call = (id: string, body: unknown) =>
-  PATCH(new Request(`http://localhost/api/admin/products/${id}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  }), { params: Promise.resolve({ id }) });
+  PATCH(
+    new Request(`http://localhost/api/admin/products/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }),
+    { params: Promise.resolve({ id }) }
+  );
 
 const validPatch = {
   description: 'Updated description.',
   seoTitle: 'Updated SEO title',
   seoDescription: 'Updated SEO description.',
-  status: PRODUCT_STATUS.PUBLISHED,
+  status: PRODUCT_STATUS.PUBLISHED
 };
 
 describe('PATCH /api/admin/products/[id]', () => {
@@ -43,7 +46,7 @@ describe('PATCH /api/admin/products/[id]', () => {
     expect(body.status).toBe(PRODUCT_STATUS.PUBLISHED);
 
     const stored = await prisma.product.findUniqueOrThrow({
-      where: { id: product.id },
+      where: { id: product.id }
     });
     expect(stored.description).toBe(validPatch.description);
   });
@@ -53,13 +56,13 @@ describe('PATCH /api/admin/products/[id]', () => {
 
     const response = await call(product.id, {
       ...validPatch,
-      description: 'a'.repeat(1001),
+      description: 'a'.repeat(1001)
     });
 
     expect(response.status).toBe(400);
 
     const stored = await prisma.product.findUniqueOrThrow({
-      where: { id: product.id },
+      where: { id: product.id }
     });
     expect(stored.description).toBe(product.description);
   });
@@ -77,7 +80,7 @@ describe('PATCH /api/admin/products/[id]', () => {
 
     const response = await call(product.id, {
       ...validPatch,
-      status: 'archived',
+      status: 'archived'
     });
 
     expect(response.status).toBe(400);
@@ -95,7 +98,7 @@ describe('PATCH /api/admin/products/[id]', () => {
     await call(product.id, { ...validPatch, title: 'Hacked title' });
 
     const stored = await prisma.product.findUniqueOrThrow({
-      where: { id: product.id },
+      where: { id: product.id }
     });
     expect(stored.title).toBe('Original title');
   });

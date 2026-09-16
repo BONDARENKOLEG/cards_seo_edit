@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
-  CardFooter,
+  CardFooter
 } from '@/components/ui/card';
 import { login } from '@/api/auth/login';
 import { ROUTES } from '@/constants';
@@ -21,7 +21,7 @@ import {
   fieldLabels,
   submitLabel,
   submittingLabel,
-  errorLabel,
+  errorLabel
 } from './login.copy';
 
 type SubmitState = 'idle' | 'submitting' | 'error';
@@ -64,24 +64,24 @@ const AdminLoginPage = () => {
         <form onSubmit={handleSubmit}>
           <CardContent className={styles.form}>
             <div className={styles.field}>
-              <Label htmlFor='email'>{fieldLabels.email}</Label>
+              <Label htmlFor="email">{fieldLabels.email}</Label>
               <Input
-                id='email'
-                name='email'
-                type='email'
-                autoComplete='email'
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 required
               />
             </div>
             <div className={styles.field}>
-              <Label htmlFor='password'>{fieldLabels.password}</Label>
+              <Label htmlFor="password">{fieldLabels.password}</Label>
               <Input
-                id='password'
-                name='password'
-                type='password'
-                autoComplete='current-password'
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 required
@@ -94,7 +94,7 @@ const AdminLoginPage = () => {
 
           <CardFooter>
             <Button
-              type='submit'
+              type="submit"
               disabled={isDisabled}
               className={styles.submit}
             >

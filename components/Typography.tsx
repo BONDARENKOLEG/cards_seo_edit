@@ -1,38 +1,38 @@
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva, type VariantProps } from 'class-variance-authority';
 
-import { cn } from "@/lib/utils";
-import { colors } from "@/lib/colors";
+import { cn } from '@/lib/utils';
+import { colors } from '@/lib/colors';
 
-const typographyVariants = cva("", {
+const typographyVariants = cva('', {
   variants: {
     variant: {
-      title: "text-2xl font-semibold tracking-tight",
-      muted: colors.mutedForeground,
-    },
+      title: 'text-2xl font-semibold tracking-tight',
+      muted: colors.mutedForeground
+    }
   },
   defaultVariants: {
-    variant: "title",
-  },
+    variant: 'title'
+  }
 });
 
-type TypographyElement = "h1" | "h2" | "h3" | "p" | "span";
+type TypographyElement = 'h1' | 'h2' | 'h3' | 'p' | 'span';
 
 type TypographyProps<T extends TypographyElement> = Omit<
   React.ComponentPropsWithoutRef<T>,
-  "className"
+  'className'
 > &
   VariantProps<typeof typographyVariants> & {
     as?: T;
     className?: string;
   };
 
-const Typography = <T extends TypographyElement = "p",>({
+const Typography = <T extends TypographyElement = 'p'>({
   as,
   variant,
   className,
   ...props
 }: TypographyProps<T>) => {
-  const Component = (as ?? "p") as React.ElementType;
+  const Component = (as ?? 'p') as React.ElementType;
 
   return (
     <Component

@@ -1,6 +1,6 @@
 export enum PRODUCT_STATUS {
-  DRAFT = "draft",
-  PUBLISHED = "published",
+  DRAFT = 'draft',
+  PUBLISHED = 'published'
 }
 
 export type ProductAttribute = {

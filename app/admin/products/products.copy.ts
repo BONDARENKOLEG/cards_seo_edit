@@ -1,4 +1,4 @@
-import { copy } from "@/locale";
+import { copy } from '@/locale';
 
 export const titleLabel = copy.admin.products.title;
 export const nameColumnLabel = copy.admin.products.columns.name;

@@ -1,3 +1,3 @@
 export const colors = {
-  mutedForeground: "text-muted-foreground",
+  mutedForeground: 'text-muted-foreground'
 };

@@ -20,7 +20,7 @@ const styles = {
   brand: 'text-base font-semibold tracking-tight',
   nav: 'flex items-center gap-2',
   navLink: (isActive: boolean) =>
-    cn(buttonVariants({ variant: isActive ? 'secondary' : 'ghost' })),
+    cn(buttonVariants({ variant: isActive ? 'secondary' : 'ghost' }))
 };
 
 export const Header = () => {
@@ -34,7 +34,7 @@ export const Header = () => {
         <span className={styles.brand}>{brandLabel}</span>
         <nav className={styles.nav}>
           <Link
-            href='/'
+            href="/"
             aria-current={isCatalogActive ? 'page' : undefined}
             className={styles.navLink(isCatalogActive)}
           >

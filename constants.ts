@@ -8,5 +8,5 @@ export const IS_PROD = process.env.NODE_ENV === 'production';
 
 export const ROUTES = {
   LOGIN: '/admin/login',
-  ADMIN_HOME: '/admin/products',
+  ADMIN_HOME: '/admin/products'
 } as const;

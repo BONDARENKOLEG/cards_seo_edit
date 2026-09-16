@@ -4,12 +4,12 @@ import {
   verifyToken,
   hashRefreshToken,
   ACCESS_TOKEN_SECRET,
-  REFRESH_TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET
 } from '@/helpers/jwt';
 import {
   ACCESS_TOKEN_TTL,
   REFRESH_TOKEN_TTL,
-  REFRESH_TOKEN_MAX_AGE_SECONDS,
+  REFRESH_TOKEN_MAX_AGE_SECONDS
 } from '@/constants';
 
 export type RotatedTokens = {
@@ -56,8 +56,8 @@ export const rotateSession = async (
       refreshTokenHash: hashRefreshToken(newRefreshToken),
       refreshTokenExpiresAt: new Date(
         Date.now() + REFRESH_TOKEN_MAX_AGE_SECONDS * 1000
-      ),
-    },
+      )
+    }
   });
 
   return { accessToken: newAccessToken, refreshToken: newRefreshToken };

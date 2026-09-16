@@ -1,26 +1,26 @@
-"use client";
+'use client';
 
-import { useState, type FormEvent } from "react";
-import { toast } from "sonner";
+import { useState, type FormEvent } from 'react';
+import { toast } from 'sonner';
 
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  SelectValue
+} from '@/components/ui/select';
 import {
   productEditSchema,
   PRODUCT_LIMITS,
-  type ProductEditField,
-} from "@/helpers/productValidation";
-import { PRODUCT_STATUS, type Product } from "@/types/product.types";
-import { FormField } from "./FormField";
-import { patchProduct } from "@/api/patchProducts";
-import { styles } from "../editor.styles";
+  type ProductEditField
+} from '@/helpers/productValidation';
+import { PRODUCT_STATUS, type Product } from '@/types/product.types';
+import { FormField } from './FormField';
+import { patchProduct } from '@/api/patchProducts';
+import { styles } from '../editor.styles';
 import {
   fieldLabels,
   statusOptionLabels,
@@ -29,10 +29,10 @@ import {
   saveErrorLabel,
   saveSuccessLabel,
   requiredValidationLabel,
-  tooLongValidationLabel,
-} from "../editor.copy";
+  tooLongValidationLabel
+} from '../editor.copy';
 
-type SaveState = "idle" | "saving" | "success" | "error";
+type SaveState = 'idle' | 'saving' | 'success' | 'error';
 type FieldErrors = Partial<Record<ProductEditField, string>>;
 type ZodIssue = { code: string; path: PropertyKey[] };
 
@@ -41,7 +41,9 @@ const mapIssuesToFieldErrors = (issues: ZodIssue[]): FieldErrors => {
   for (const issue of issues) {
     const field = issue.path[0] as ProductEditField;
     errors[field] =
-      issue.code === "too_big" ? tooLongValidationLabel : requiredValidationLabel;
+      issue.code === 'too_big'
+        ? tooLongValidationLabel
+        : requiredValidationLabel;
   }
   return errors;
 };
@@ -49,12 +51,10 @@ const mapIssuesToFieldErrors = (issues: ZodIssue[]): FieldErrors => {
 export const ProductEditorForm = ({ product }: { product: Product }) => {
   const [description, setDescription] = useState(product.description);
   const [seoTitle, setSeoTitle] = useState(product.seoTitle);
-  const [seoDescription, setSeoDescription] = useState(
-    product.seoDescription,
-  );
+  const [seoDescription, setSeoDescription] = useState(product.seoDescription);
   const [status, setStatus] = useState<PRODUCT_STATUS>(product.status);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
-  const [saveState, setSaveState] = useState<SaveState>("idle");
+  const [saveState, setSaveState] = useState<SaveState>('idle');
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -63,17 +63,17 @@ export const ProductEditorForm = ({ product }: { product: Product }) => {
       description,
       seoTitle,
       seoDescription,
-      status,
+      status
     });
 
     if (!result.success) {
       setFieldErrors(mapIssuesToFieldErrors(result.error.issues));
-      setSaveState("idle");
+      setSaveState('idle');
       return;
     }
 
     setFieldErrors({});
-    setSaveState("saving");
+    setSaveState('saving');
 
     try {
       const response = await patchProduct(product.id, result.data);
@@ -85,17 +85,17 @@ export const ProductEditorForm = ({ product }: { product: Product }) => {
 
         if (body.issues) {
           setFieldErrors(mapIssuesToFieldErrors(body.issues));
-          setSaveState("idle");
+          setSaveState('idle');
           return;
         }
 
         throw new Error(`Save failed with status ${response.status}`);
       }
 
-      setSaveState("success");
+      setSaveState('success');
       toast.success(saveSuccessLabel);
     } catch {
-      setSaveState("error");
+      setSaveState('error');
     }
   };
 
@@ -153,13 +153,13 @@ export const ProductEditorForm = ({ product }: { product: Product }) => {
       <div className={styles.actions}>
         <Button
           type="submit"
-          disabled={saveState === "saving"}
+          disabled={saveState === 'saving'}
           className={styles.submit}
         >
-          {saveState === "saving" ? savingLabel : saveLabel}
+          {saveState === 'saving' ? savingLabel : saveLabel}
         </Button>
-        {saveState === "error" && (
-          <span className={styles.statusMessage("error")}>
+        {saveState === 'error' && (
+          <span className={styles.statusMessage('error')}>
             {saveErrorLabel}
           </span>
         )}

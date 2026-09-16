@@ -26,7 +26,7 @@ export const verifyToken = async (
 ): Promise<TokenPayload | null> => {
   try {
     const { payload } = await jwtVerify(token, secret, {
-      algorithms: ['HS256'],
+      algorithms: ['HS256']
     });
     if (typeof payload.sub !== 'string') return null;
     return { sub: payload.sub };

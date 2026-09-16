@@ -6,7 +6,7 @@ import {
   verifyToken,
   hashRefreshToken,
   ACCESS_TOKEN_SECRET,
-  REFRESH_TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET
 } from '@/helpers/jwt';
 
 describe('signToken / verifyToken', () => {

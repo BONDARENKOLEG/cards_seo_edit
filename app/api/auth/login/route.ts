@@ -7,12 +7,12 @@ import {
   signToken,
   hashRefreshToken,
   ACCESS_TOKEN_SECRET,
-  REFRESH_TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET
 } from '@/helpers/jwt';
 import {
   ACCESS_TOKEN_TTL,
   REFRESH_TOKEN_TTL,
-  REFRESH_TOKEN_MAX_AGE_SECONDS,
+  REFRESH_TOKEN_MAX_AGE_SECONDS
 } from '@/constants';
 import { setAuthCookies } from '@/helpers/cookies';
 
@@ -75,8 +75,8 @@ export const POST = async (request: Request) => {
       refreshTokenHash: hashRefreshToken(refreshToken),
       refreshTokenExpiresAt: new Date(
         Date.now() + REFRESH_TOKEN_MAX_AGE_SECONDS * 1000
-      ),
-    },
+      )
+    }
   });
 
   const response = NextResponse.json({ email: user.email });

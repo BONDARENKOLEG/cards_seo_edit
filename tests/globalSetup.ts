@@ -6,7 +6,10 @@ import { config } from 'dotenv';
 const rootDir = path.resolve(__dirname, '..');
 config({ path: path.join(rootDir, '.env.test') });
 
-const dbPath = path.join(rootDir, process.env.DATABASE_URL!.replace('file:', ''));
+const dbPath = path.join(
+  rootDir,
+  process.env.DATABASE_URL!.replace('file:', '')
+);
 
 const removeDbFiles = () => {
   for (const suffix of ['', '-journal', '-wal', '-shm']) {
@@ -21,7 +24,7 @@ export default async function setup() {
   execSync('npx prisma migrate deploy', {
     cwd: rootDir,
     env: { ...process.env, DATABASE_URL: process.env.DATABASE_URL },
-    stdio: 'inherit',
+    stdio: 'inherit'
   });
 
   return () => {

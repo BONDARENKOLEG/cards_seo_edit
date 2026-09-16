@@ -7,7 +7,7 @@ const validInput = {
   description: 'A valid description.',
   seoTitle: 'A valid SEO title',
   seoDescription: 'A valid SEO description.',
-  status: PRODUCT_STATUS.DRAFT,
+  status: PRODUCT_STATUS.DRAFT
 };
 
 describe('productEditSchema', () => {
@@ -18,7 +18,10 @@ describe('productEditSchema', () => {
   it.each(['description', 'seoTitle', 'seoDescription'] as const)(
     'rejects an empty %s',
     (field) => {
-      const result = productEditSchema.safeParse({ ...validInput, [field]: '' });
+      const result = productEditSchema.safeParse({
+        ...validInput,
+        [field]: ''
+      });
 
       expect(result.success).toBe(false);
     }
@@ -29,7 +32,7 @@ describe('productEditSchema', () => {
     (field) => {
       const result = productEditSchema.safeParse({
         ...validInput,
-        [field]: 'a'.repeat(PRODUCT_LIMITS[field]),
+        [field]: 'a'.repeat(PRODUCT_LIMITS[field])
       });
 
       expect(result.success).toBe(true);
@@ -41,7 +44,7 @@ describe('productEditSchema', () => {
     (field) => {
       const result = productEditSchema.safeParse({
         ...validInput,
-        [field]: 'a'.repeat(PRODUCT_LIMITS[field] + 1),
+        [field]: 'a'.repeat(PRODUCT_LIMITS[field] + 1)
       });
 
       expect(result.success).toBe(false);
@@ -49,7 +52,10 @@ describe('productEditSchema', () => {
   );
 
   it('rejects an invalid status value', () => {
-    const result = productEditSchema.safeParse({ ...validInput, status: 'archived' });
+    const result = productEditSchema.safeParse({
+      ...validInput,
+      status: 'archived'
+    });
 
     expect(result.success).toBe(false);
   });

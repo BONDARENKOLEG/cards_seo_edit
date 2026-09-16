@@ -17,14 +17,14 @@ const products = [
     attributes: [
       { label: 'Color', value: 'Black' },
       { label: 'Battery life', value: '30 hours' },
-      { label: 'Connectivity', value: 'Bluetooth 5.3' },
+      { label: 'Connectivity', value: 'Bluetooth 5.3' }
     ],
     description:
       'Over-ear wireless headphones with active noise cancellation and a 30-hour battery life.',
     seoTitle: 'Wireless Headphones — Product Content Studio',
     seoDescription:
       'Over-ear wireless headphones with active noise cancellation and a 30-hour battery life.',
-    status: PRODUCT_STATUS.PUBLISHED,
+    status: PRODUCT_STATUS.PUBLISHED
   },
   {
     slug: 'ceramic-coffee-mug',
@@ -32,14 +32,14 @@ const products = [
     attributes: [
       { label: 'Capacity', value: '350 ml' },
       { label: 'Material', value: 'Ceramic' },
-      { label: 'Dishwasher safe', value: 'Yes' },
+      { label: 'Dishwasher safe', value: 'Yes' }
     ],
     description:
       'Hand-glazed 350ml ceramic mug, safe for both dishwasher and microwave use.',
     seoTitle: 'Ceramic Coffee Mug — Product Content Studio',
     seoDescription:
       'Hand-glazed 350ml ceramic mug, safe for both dishwasher and microwave use.',
-    status: PRODUCT_STATUS.PUBLISHED,
+    status: PRODUCT_STATUS.PUBLISHED
   },
   {
     slug: 'trail-running-shoes',
@@ -47,15 +47,15 @@ const products = [
     attributes: [
       { label: 'Size range', value: '38–46' },
       { label: 'Weight', value: '290 g' },
-      { label: 'Sole', value: 'Reinforced grip' },
+      { label: 'Sole', value: 'Reinforced grip' }
     ],
     description:
       'Lightweight trail running shoes with a reinforced grip sole for uneven terrain.',
     seoTitle: 'Trail Running Shoes — Product Content Studio',
     seoDescription:
       'Lightweight trail running shoes with a reinforced grip sole for uneven terrain.',
-    status: PRODUCT_STATUS.DRAFT,
-  },
+    status: PRODUCT_STATUS.DRAFT
+  }
 ];
 
 const main = async () => {
@@ -63,7 +63,7 @@ const main = async () => {
     await prisma.product.upsert({
       where: { slug: product.slug },
       update: product,
-      create: product,
+      create: product
     });
   }
 
@@ -72,7 +72,7 @@ const main = async () => {
   await prisma.user.upsert({
     where: { email: ADMIN_EMAIL },
     update: { passwordHash },
-    create: { email: ADMIN_EMAIL, passwordHash },
+    create: { email: ADMIN_EMAIL, passwordHash }
   });
 };
 

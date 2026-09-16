@@ -4,7 +4,7 @@ import { prisma } from '@/prisma/client';
 import {
   signToken,
   hashRefreshToken,
-  REFRESH_TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET
 } from '@/helpers/jwt';
 import { rotateSession } from '@/helpers/refreshSession';
 import { REFRESH_TOKEN_TTL } from '@/constants';
@@ -27,8 +27,8 @@ describe('rotateSession', () => {
       where: { id: user.id },
       data: {
         refreshTokenHash: hashRefreshToken(refreshToken),
-        refreshTokenExpiresAt: new Date(Date.now() + DAY_MS),
-      },
+        refreshTokenExpiresAt: new Date(Date.now() + DAY_MS)
+      }
     });
 
     const result = await rotateSession(refreshToken);
@@ -38,7 +38,7 @@ describe('rotateSession', () => {
     expect(result!.refreshToken).not.toBe(refreshToken);
 
     const updatedUser = await prisma.user.findUniqueOrThrow({
-      where: { id: user.id },
+      where: { id: user.id }
     });
     expect(updatedUser.refreshTokenHash).toBe(
       hashRefreshToken(result!.refreshToken)
@@ -57,8 +57,8 @@ describe('rotateSession', () => {
       where: { id: user.id },
       data: {
         refreshTokenHash: hashRefreshToken(refreshToken),
-        refreshTokenExpiresAt: new Date(Date.now() + DAY_MS),
-      },
+        refreshTokenExpiresAt: new Date(Date.now() + DAY_MS)
+      }
     });
 
     await rotateSession(refreshToken);
@@ -79,8 +79,8 @@ describe('rotateSession', () => {
       where: { id: user.id },
       data: {
         refreshTokenHash: hashRefreshToken(refreshToken),
-        refreshTokenExpiresAt: new Date(Date.now() - DAY_MS),
-      },
+        refreshTokenExpiresAt: new Date(Date.now() - DAY_MS)
+      }
     });
 
     const result = await rotateSession(refreshToken);
@@ -100,8 +100,8 @@ describe('rotateSession', () => {
       where: { id: user.id },
       data: {
         refreshTokenHash: hashRefreshToken('some-other-token'),
-        refreshTokenExpiresAt: new Date(Date.now() + DAY_MS),
-      },
+        refreshTokenExpiresAt: new Date(Date.now() + DAY_MS)
+      }
     });
 
     const result = await rotateSession(refreshToken);

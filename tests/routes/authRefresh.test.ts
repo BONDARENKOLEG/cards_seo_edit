@@ -5,7 +5,7 @@ import { prisma } from '@/prisma/client';
 import {
   signToken,
   hashRefreshToken,
-  REFRESH_TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET
 } from '@/helpers/jwt';
 import { REFRESH_TOKEN_COOKIE, ACCESS_TOKEN_COOKIE } from '@/helpers/cookies';
 import { REFRESH_TOKEN_TTL } from '@/constants';
@@ -20,7 +20,7 @@ const callWithCookie = (cookieValue: string | undefined) =>
       method: 'POST',
       headers: cookieValue
         ? { cookie: `${REFRESH_TOKEN_COOKIE}=${cookieValue}` }
-        : undefined,
+        : undefined
     })
   );
 
@@ -38,8 +38,8 @@ describe('POST /api/auth/refresh', () => {
       where: { id: user.id },
       data: {
         refreshTokenHash: hashRefreshToken(refreshToken),
-        refreshTokenExpiresAt: new Date(Date.now() + DAY_MS),
-      },
+        refreshTokenExpiresAt: new Date(Date.now() + DAY_MS)
+      }
     });
 
     const response = await callWithCookie(refreshToken);
@@ -75,8 +75,8 @@ describe('POST /api/auth/refresh', () => {
       where: { id: user.id },
       data: {
         refreshTokenHash: hashRefreshToken(refreshToken),
-        refreshTokenExpiresAt: new Date(Date.now() + DAY_MS),
-      },
+        refreshTokenExpiresAt: new Date(Date.now() + DAY_MS)
+      }
     });
 
     await callWithCookie(refreshToken);

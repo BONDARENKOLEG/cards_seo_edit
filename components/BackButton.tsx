@@ -1,11 +1,11 @@
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { cn } from '@/lib/utils';
+import { buttonVariants } from '@/components/ui/button';
 
 const styles = {
-  link: cn(buttonVariants({ variant: "ghost", size: "sm" }), "self-start"),
+  link: cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'self-start')
 };
 
 type BackButtonProps = {

@@ -10,7 +10,7 @@ const call = (body: unknown) =>
     new Request('http://localhost/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+      body: JSON.stringify(body)
     })
   );
 
@@ -22,7 +22,7 @@ describe('POST /api/auth/login', () => {
 
     const response = await call({
       email: 'admin@mail.com',
-      password: '12345678',
+      password: '12345678'
     });
 
     expect(response.status).toBe(200);
@@ -38,7 +38,7 @@ describe('POST /api/auth/login', () => {
     await call({ email: 'admin@mail.com', password: '12345678' });
 
     const updated = await prisma.user.findUniqueOrThrow({
-      where: { id: user.id },
+      where: { id: user.id }
     });
     expect(updated.refreshTokenHash).not.toBeNull();
     expect(updated.refreshTokenExpiresAt).not.toBeNull();
@@ -49,7 +49,7 @@ describe('POST /api/auth/login', () => {
 
     const response = await call({
       email: 'admin@mail.com',
-      password: 'wrong-password',
+      password: 'wrong-password'
     });
     const body = await response.json();
 
@@ -60,7 +60,7 @@ describe('POST /api/auth/login', () => {
   it('rejects an unknown email with the same generic message (no user enumeration)', async () => {
     const response = await call({
       email: 'nobody@mail.com',
-      password: '12345678',
+      password: '12345678'
     });
     const body = await response.json();
 
@@ -79,7 +79,7 @@ describe('POST /api/auth/login', () => {
 
     const response = await call({
       email: 'admin@mail.com',
-      password: '12345678',
+      password: '12345678'
     });
     const body = await response.json();
 

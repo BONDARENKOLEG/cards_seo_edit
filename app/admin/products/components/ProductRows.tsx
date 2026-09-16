@@ -1,13 +1,13 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-import { Badge } from "@/components/ui/badge";
-import { TableRow, TableCell } from "@/components/ui/table";
-import { PRODUCT_STATUS, type Product } from "@/types/product.types";
-import { styles } from "../products.styles";
-import { editLabel, statusLabels } from "../products.copy";
+import { Badge } from '@/components/ui/badge';
+import { TableRow, TableCell } from '@/components/ui/table';
+import { PRODUCT_STATUS, type Product } from '@/types/product.types';
+import { styles } from '../products.styles';
+import { editLabel, statusLabels } from '../products.copy';
 
 const statusVariant = (status: PRODUCT_STATUS) =>
-  status === PRODUCT_STATUS.PUBLISHED ? "default" : "secondary";
+  status === PRODUCT_STATUS.PUBLISHED ? 'default' : 'secondary';
 
 type ProductRowsProps = {
   products: Product[];
