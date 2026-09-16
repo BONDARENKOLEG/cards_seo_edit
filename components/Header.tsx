@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { copy } from '@/locale';
-import { spacing } from '@/lib/spacing';
 import { ROUTES } from '@/constants';
 import { LogoutButton } from '@/app/admin/components/LogoutButton';
 
@@ -16,7 +15,8 @@ const adminLabel = copy.header.nav.admin;
 
 const styles = {
   header: 'border-b border-border bg-background mb-5',
-  container: `mx-auto flex w-full max-w-5xl flex-col gap-3 px-${spacing.normal} py-${spacing.sm} sm:flex-row sm:items-center sm:justify-between`,
+  container:
+    'mx-auto flex w-full max-w-5xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between',
   brand: 'text-base font-semibold tracking-tight',
   nav: 'flex items-center gap-2',
   navLink: (isActive: boolean) =>

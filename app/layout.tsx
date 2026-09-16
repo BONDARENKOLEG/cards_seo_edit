@@ -4,7 +4,6 @@ import './globals.css';
 import { Header } from '@/components/Header';
 import { Toaster } from '@/components/ui/sonner';
 import { copy } from '@/locale';
-import { spacing } from '@/lib/spacing';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,7 +28,7 @@ const RootLayout = ({ children }: LayoutProps<'/'>) => {
     >
       <body className="flex min-h-full flex-col">
         <Header />
-        <div className={`pt-${spacing.l}`}>{children}</div>
+        <div className="pt-8">{children}</div>
         <Toaster />
       </body>
     </html>

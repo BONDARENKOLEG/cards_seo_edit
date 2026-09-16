@@ -1,9 +1,8 @@
-import { spacing } from '@/lib/spacing';
 import { colors } from '@/lib/colors';
 import { cn } from '@/lib/utils';
 
 export const styles = {
-  container: `mx-auto flex w-full max-w-3xl flex-col gap-6 px-${spacing.normal} py-${spacing.xl}`,
+  container: 'mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-16',
   section: 'flex flex-col gap-2',
   attributesList: 'flex flex-col gap-2',
   attributeRow:
