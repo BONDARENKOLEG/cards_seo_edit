@@ -19,3 +19,12 @@ export const unsavedChangesDescription =
   copy.admin.products.editor.unsavedChanges.description;
 export const leaveLabel = copy.admin.products.editor.unsavedChanges.leave;
 export const stayLabel = copy.admin.products.editor.unsavedChanges.stay;
+export const generateButtonLabel = copy.admin.products.editor.generate.button;
+export const generatingLabel = copy.admin.products.editor.generate.generating;
+export const generateErrorLabel = copy.admin.products.editor.generate.error;
+export const generatePreviewTitleLabel =
+  copy.admin.products.editor.generate.previewTitle;
+export const generateMockedNoticeLabel =
+  copy.admin.products.editor.generate.mockedNotice;
+export const applyLabel = copy.admin.products.editor.generate.apply;
+export const discardLabel = copy.admin.products.editor.generate.discard;

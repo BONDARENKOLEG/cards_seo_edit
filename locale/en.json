@@ -74,6 +74,15 @@
           "description": "You have unsaved changes. If you leave now, they'll be lost.",
           "leave": "Leave without saving",
           "stay": "Stay"
+        },
+        "generate": {
+          "button": "Generate with AI",
+          "generating": "Generating…",
+          "error": "Couldn't generate a suggestion. Try again.",
+          "previewTitle": "AI suggestion",
+          "mockedNotice": "Mock response — no API key configured.",
+          "apply": "Apply",
+          "discard": "Discard"
         }
       }
     }

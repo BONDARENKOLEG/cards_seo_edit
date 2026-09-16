@@ -73,11 +73,11 @@ npm test
 
 This is fully self-contained — no external services or API keys are needed. `tests/globalSetup.ts` provisions a dedicated, ephemeral SQLite database (`prisma/test.db`) by running the real Prisma migrations against it before the suite starts, and deletes it afterwards. Nothing here mocks the ORM; the integration-level tests hit a real (if temporary) database.
 
-**Current coverage: 59 tests across 10 files.**
+**Current coverage: 67 tests across 12 files.**
 
 - **Helpers** (`tests/helpers/`): JWT signing/verification (valid roundtrip, wrong secret, expired token), `hashRefreshToken`, password hashing, `rotateSession` (the refresh-rotation logic used by both `/api/auth/refresh` and the route guard), and the product-edit Zod schema at its exact character limits.
 - **Validation** (`tests/api/auth/validation.test.ts`): the login schema's edge cases.
-- **Route handlers & the auth guard** (`tests/routes/`, `tests/proxy.test.ts`): the specific critical scenarios the task calls out by name — an unauthenticated or invalid-data `PATCH` on the admin product API is rejected and does not persist; a draft product never leaks through the public catalog API or page (`404` either way); login/refresh/logout set and clear cookies correctly and return a generic error message on bad credentials (no user enumeration); a stolen/reused refresh token is rejected after rotation; `proxy.ts` itself blocks unauthenticated admin requests and silently refreshes an idle-but-still-valid session.
+- **Route handlers & the auth guard** (`tests/routes/`, `tests/proxy.test.ts`): the specific critical scenarios the task calls out by name — an unauthenticated or invalid-data `PATCH` on the admin product API is rejected and does not persist; a draft product never leaks through the public catalog API or page (`404` either way); login/refresh/logout set and clear cookies correctly and return a generic error message on bad credentials (no user enumeration); a stolen/reused refresh token is rejected after rotation; `proxy.ts` itself blocks unauthenticated admin requests and silently refreshes an idle-but-still-valid session; the LLM-generation endpoint stays within the editor's character limits and 404s for an unknown product.
 
 **Why this scope:** the task requires covering "key business logic and critical scenarios," not exhaustive coverage. Helpers, validation, and the route handlers/guard are where auth, validation, and draft-protection are actually enforced — that's also where real bugs showed up during manual testing while building the feature (a cookie-scoping bug, an idle-session bug). UI/component tests (e.g. React Testing Library on the product editor form) were deliberately left out of scope given the time budget — the editor's client-side behavior (disabled states, error rendering) was checked manually instead. This is a known limitation, not an oversight.
 
@@ -95,10 +95,22 @@ JWT access (15 min) + refresh (7 days) tokens, both `httpOnly` cookies, signed w
 - Client-side mutations (`patchProduct`, via `authFetch`) redirect to `/admin/login` on a `401` — which in practice only happens once the refresh token itself has expired, since `proxy.ts` already handles the refreshable case upstream.
 - Registration, password reset, and roles are explicitly out of scope per the task.
 
+## LLM-assisted content generation (bonus)
+
+In the product editor, **Generate with AI** asks Gemini (`gemini-3.6-flash`, via `@google/genai`) to draft a description, SEO title, and SEO description in Ukrainian, based on the product's (read-only) name and characteristics. Gemini was picked specifically because it has a genuinely free tier (no card required) at [aistudio.google.com](https://aistudio.google.com/apikey) — reviewers can verify the real-model path without spending anything.
+
+- **Schema-constrained output, not free-text parsing:** the request sets `responseMimeType: "application/json"` and a `responseSchema` whose `minLength`/`maxLength` match the editor's own limits (1000/60/160 chars), then the parsed JSON is validated again against a Zod schema server-side before it's trusted — defense in depth, not just a prompt instruction.
+- **Nothing is auto-applied.** The suggestion renders in a separate preview panel with **Apply** / **Discard**. Only **Apply** copies the three fields into the actual form inputs — it doesn't save or publish, and generating a suggestion never touches whatever you've already typed unless you explicitly apply it.
+- **Errors don't lose work or hang the UI:** a failed generation (network error, rate limit, malformed model output) shows a toast and leaves the form exactly as it was — caught via the SDK's `ApiError` (branching on `.status`, e.g. `429` for rate limits) mapped to clean JSON error responses, not a raw 500.
+- **Reproducible without an API key:** if `GEMINI_API_KEY` isn't set, `helpers/generateProductContent.ts` returns a deterministic mock (built from the product's own title/attributes) instead of calling the API — the response carries `mocked: true`, and the UI shows an explicit "Mock response" badge on the preview. This is the default in this repo's own `.env.example`, so `npm test` and a from-scratch `npm run setup` both exercise the mock path with no credentials and no network calls.
+- **What's been verified:** the mock path end-to-end (automated tests, plus a manual `curl` pass — auth-gated, 404 for an unknown product, mock badge rendering) **and the real model** — manually verified via `curl` against a live `GEMINI_API_KEY`: `mocked: false`, natural Ukrainian output, all three fields within their character limits (492/1000, 59/60, 143/160 in the run that was checked). Note the model name did need a fix along the way — `gemini-2.5-flash` had been retired for new API keys since this was first written; `gemini-3.6-flash` is the current free-tier Flash model.
+
+To try it against the real model: get a free key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey), add `GEMINI_API_KEY=...` to `.env`, and restart the dev server.
+
 ## Known limitations / unfinished parts
 
 - **No UI/component or end-to-end tests** — covered manually instead (see [Testing](#testing)). Would add React Testing Library for the editor form and/or Playwright for the full login → edit → publish flow with more time.
-- **Bonus tasks not attempted:** LLM-assisted content generation, Shopify import, a Figma-sourced design pass, Docker/CI. None of these are required for acceptance per the task.
+- **Other bonus tasks not attempted:** Shopify import, a Figma-sourced design pass, Docker/CI. None of these are required for acceptance per the task.
 
 ## Time spent
 

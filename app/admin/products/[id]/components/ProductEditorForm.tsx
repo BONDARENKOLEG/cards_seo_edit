@@ -19,8 +19,10 @@ import {
 } from '@/helpers/productValidation';
 import { PRODUCT_STATUS, type Product } from '@/types/product.types';
 import { FormField } from './FormField';
+import { GenerateSuggestionPanel } from './GenerateSuggestionPanel';
 import { patchProduct } from '@/api/patchProducts';
 import { useEditorDirty } from '../EditorDirtyContext';
+import type { GeneratedContent } from '@/helpers/generateProductContent';
 import { styles } from '../editor.styles';
 import {
   fieldLabels,
@@ -130,8 +132,19 @@ export const ProductEditorForm = ({ product }: { product: Product }) => {
     }
   };
 
+  const handleApplySuggestion = (content: GeneratedContent) => {
+    setDescription(content.description);
+    setSeoTitle(content.seoTitle);
+    setSeoDescription(content.seoDescription);
+  };
+
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
+      <GenerateSuggestionPanel
+        productId={product.id}
+        onApply={handleApplySuggestion}
+      />
+
       <FormField
         id="description"
         as="textarea"

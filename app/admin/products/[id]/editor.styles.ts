@@ -19,5 +19,20 @@ export const styles = {
   actions: 'flex items-center gap-3',
   submit: 'cursor-pointer',
   statusMessage: (state: 'success' | 'error') =>
-    cn('text-sm', state === 'success' ? 'text-primary' : 'text-destructive')
+    cn('text-sm', state === 'success' ? 'text-primary' : 'text-destructive'),
+  generateButton: 'cursor-pointer',
+  generatePreview:
+    'flex flex-col gap-3 rounded-md border border-border bg-muted/40 p-4',
+  generatePreviewHeader: 'flex items-center justify-between gap-2',
+  generatePreviewTitle: 'text-sm font-medium',
+  generateMockedBadge: cn(
+    'rounded-full border border-border px-2 py-0.5 text-xs',
+    colors.mutedForeground
+  ),
+  generateField: 'flex flex-col gap-1',
+  generateFieldLabel: cn('text-xs font-medium', colors.mutedForeground),
+  generateFieldValue: 'text-sm whitespace-pre-wrap',
+  generateActions: 'flex items-center gap-2',
+  generateApply: 'cursor-pointer',
+  generateDiscard: 'cursor-pointer'
 };
